@@ -1,9 +1,15 @@
 #coding:utf8
-from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for, jsonify
-from sender import Mail, Message
+import datetime
 import json
 import logging
+
+from flask import (Blueprint, flash, g, jsonify, redirect, render_template,
+                   request, session, url_for)
+from sender import Mail, Message
+
 from mailhook.config import config
+
+logging.basicConfig(filename="mailhook.log", level=logging.INFO)
 
 api = Blueprint('api', __name__)
 
@@ -30,9 +36,11 @@ def send_mail(srv_name):
         debug_level=None
         )
     try:
+        logging.info('--------'+str(datetime.datetime.now())+'--------------')
         logging.info(data['mail_title'])
         logging.info(data['mail_to'])
         logging.info(data['mail_html'])
+        logging.info('=======================================================')
         mail.send(mail_msg)
         return jsonify({"status":0, "msg":"Success"})
     except Exception, e:

@@ -7,4 +7,5 @@ services:
          - "5000:5000"
         volumes:
          - "./config.json:/usr/src/app/config.json"
+         - "./mailhook.log:/usr/src/app/mailhook.log"
         restart: always
