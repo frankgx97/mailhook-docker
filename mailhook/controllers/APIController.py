@@ -18,10 +18,12 @@ def send_mail(srv_name):
     '''发送邮件'''
     data = request.get_json()
     if srv_name not in config:
+        logging.warning('!!!'+str(datetime.datetime.now())+'InvalidService!!!')
         return jsonify({"status":1, "msg":"InvalidService"})
     else:
         srv_config = config[srv_name]
     if not verify_key(srv_name, data['key']):
+        logging.warning('!!!'+str(datetime.datetime.now())+'InvalidKey!!!')
         return jsonify({"status":1, "msg":"InvalidKey"})
 
     mail_msg = Message(data['mail_title'], fromaddr=srv_config['mail_from'], to=data['mail_to'])
@@ -44,6 +46,7 @@ def send_mail(srv_name):
         mail.send(mail_msg)
         return jsonify({"status":0, "msg":"Success"})
     except Exception, e:
+        logging.warning('!!!'+str(datetime.datetime.now())+ e +'!!!')
         return jsonify({"status":2, "msg":e})
 
 def verify_key(srv, key):
