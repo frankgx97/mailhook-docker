@@ -45,9 +45,10 @@ def send_mail(srv_name):
         logging.info('=======================================================')
         mail.send(mail_msg)
         return jsonify({"status":0, "msg":"Success"})
-    except Exception, e:
-        logging.warning('!!!'+str(datetime.datetime.now())+ e +'!!!')
-        return jsonify({"status":2, "msg":e})
+    except Exception as e:
+        logging.warning('!!!'+str(datetime.datetime.now())+'!!!')
+        logging.warning(str(e))
+        return jsonify({"status":2, "msg":str(e)})
 
 def verify_key(srv, key):
     if config[srv]['key'] == key:
